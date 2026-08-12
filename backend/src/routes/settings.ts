@@ -11,7 +11,8 @@ router.get('/maintenance', (authenticateToken as any), (requireRole('ADMIN') as 
 });
 
 router.post('/maintenance', (authenticateToken as any), (requireRole('ADMIN') as any), async (req: AuthRequest, res: any) => {
-  const enabled = req.body.enabled === true || req.body.enabled === 'true';
+  const body = req.body as any || {};
+  const enabled = body.enabled === true || body.enabled === 'true';
   await prisma.setting.upsert({
     where: { name: 'maintenance_mode' },
     update: { value: enabled ? 'true' : 'false' },
