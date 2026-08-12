@@ -1,0 +1,53 @@
+Student Attendance App - How to Start the Server
+
+1) Open PowerShell or Command Prompt.
+
+2) Go to the project folder:
+   cd "C:\Users\Al\Desktop\MY_PRACTICE"
+
+3) Install the required dependencies if they are not already installed:
+   npm install
+
+4) Start the app server:
+   node server.js
+
+5) Open the app in your browser:
+   http://localhost:3000
+
+6) Sign in with one of these demo accounts:
+   Admin:
+   - Username: admin
+   - Password: admin123
+
+   Student:
+   - Username: student
+   - Password: student123
+
+7) To verify the server is running, open another terminal and run:
+   Invoke-RestMethod -Uri "http://localhost:3000/health"
+
+   Expected result:
+   {"success":true,"status":"ok"}
+
+8) If port 3000 is already in use, stop the other process and run step 4 again.
+
+9) For network access on the same Wi-Fi or LAN, make sure the app is listening on 0.0.0.0, then open your computer's local IP address in the browser:
+   http://<YOUR_LOCAL_IP>:3000
+
+10) Before publishing publicly, change the default passwords and keep secrets in a .env file.
+
+11) For a public website, deploy behind HTTPS using a hosting service such as Render or Vercel.
+
+Safety reminders:
+- Never share secret values in public code or GitHub.
+- Do not keep production passwords as default values.
+- Use HTTPS for public access.
+- Use strong admin credentials before deployment.
+
+Project files used by the app:
+- server.js
+- src/config.js
+- src/routes/auth.js
+- src/routes/attendance.js
+- src/routes/settings.js
+- index.html

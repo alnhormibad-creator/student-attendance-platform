@@ -1,0 +1,8 @@
+{
+  "name": "student-attendance-platform",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Student Attendance Tracking Platform",
+  "author": "Your Name",
+  "license": "MIT"
+}

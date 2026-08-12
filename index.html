@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student & Admin Attendance App</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --accent: #14b8a6;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --panel: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.22), transparent 24%), linear-gradient(135deg, #0f172a 0%, #111827 45%, #172554 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .container {
+            width: min(100%, 980px);
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(18px);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow {
+            margin: 0 0 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        h1, h2, h3, p {
+            margin-top: 0;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(59, 130, 246, 0.18));
+            color: var(--primary-dark);
+            padding: 8px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+            margin-bottom: 18px;
+        }
+
+        .auth-card {
+            max-width: 520px;
+        }
+
+        .auth-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .link-btn {
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            padding: 0;
+            font: inherit;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .card-header {
+            margin-bottom: 14px;
+        }
+
+        .field {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font: inherit;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.16);
+        }
+
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 16px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.16);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #eef2ff;
+            color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent), #0f766e);
+            color: white;
+        }
+
+        .demo-box {
+            margin-top: 16px;
+            background: var(--panel);
+            border: 1px dashed #c7d2fe;
+            border-radius: 12px;
+            padding: 14px;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .message {
+            min-height: 1.3em;
+            margin: 12px 0 0;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .profile-card {
+            margin-bottom: 16px;
+        }
+
+        .profile-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .panel {
+            min-height: 240px;
+        }
+
+        .status-box {
+            margin-top: 18px;
+            padding: 14px;
+            background: var(--panel);
+            border-radius: 14px;
+            color: var(--muted);
+        }
+
+        .status-label {
+            display: inline-block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .student-list {
+            display: grid;
+            gap: 10px;
+            margin: 18px 0 14px;
+        }
+
+        .student-list div {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--panel);
+            font-size: 0.95rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 14px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="hero-header">
+            <div>
+                <p class="eyebrow">Smart school system</p>
+                <h1>Attendance Tracker</h1>
+                <p class="subtitle">A secure, polished portal for students and administrators to manage classroom attendance from anywhere with confidence.</p>
+            </div>
+            <div class="hero-badges">
+                <span class="badge">Secure by design</span>
+                <span class="badge">Global-ready</span>
+                <span class="badge">Live updates</span>
+            </div>
+        </header>
+
+        <div id="authSection" class="card auth-card">
+            <div id="loginView">
+                <div class="card-header">
+                    <div>
+                        <h2>Sign in</h2>
+                        <p>Choose your role and access the right dashboard.</p>
+                    </div>
+                </div>
+
+                <form id="loginForm">
+                    <label class="field">
+                        <span>Username or email</span>
+                        <input type="text" id="loginUsername" placeholder="Enter username or email" required>
+                    </label>
+                    <label class="field">
+                        <span>Password</span>
+                        <input type="password" id="loginPassword" placeholder="Enter password" required>
+                    </label>
+                    <button class="btn btn-primary" type="submit">Login</button>
+                </form>
+
+                <div class="auth-actions">
+                    <button class="link-btn" id="showRegisterBtn" type="button">Create account</button>
+                    <button class="link-btn" id="showForgotBtn" type="button">Forgot password?</button>
+                </div>
+            </div>
+
+            <div id="registerView" class="hidden">
+                <div class="card-header">
+                    <div>
+                        <h2>Create account</h2>
+                        <p>Register with your email and verify it before signing in.</p>
+                    </div>
+                </div>
+
+                <form id="registerForm">
+                    <label class="field">
+                        <span>Username</span>
+                        <input type="text" id="registerUsername" required>
+                    </label>
+                    <label class="field">
+                        <span>Email</span>
+                        <input type="email" id="registerEmail" required>
+                    </label>
+                    <label class="field">
+                        <span>Password</span>
+                        <input type="password" id="registerPassword" required>
+                    </label>
+                    <button class="btn btn-primary" type="submit">Create account</button>
+                </form>
+                <div class="auth-actions">
+                    <button class="link-btn" id="showLoginFromRegisterBtn" type="button">Back to login</button>
+                </div>
+            </div>
+
+            <div id="forgotView" class="hidden">
+                <div class="card-header">
+                    <div>
+                        <h2>Reset password</h2>
+                        <p>Enter your email and receive a recovery code.</p>
+                    </div>
+                </div>
+
+                <form id="forgotForm">
+                    <label class="field">
+                        <span>Email</span>
+                        <input type="email" id="forgotEmail" required>
+                    </label>
+                    <button class="btn btn-secondary" type="submit">Send code</button>
+                </form>
+                <div class="auth-actions">
+                    <button class="link-btn" id="showLoginFromForgotBtn" type="button">Back to login</button>
+                </div>
+            </div>
+
+            <div id="verifyView" class="hidden">
+                <div class="card-header">
+                    <div>
+                        <h2>Verify your email</h2>
+                        <p>Enter the six-digit code sent to your inbox.</p>
+                    </div>
+                </div>
+
+                <form id="verifyForm">
+                    <label class="field">
+                        <span>Email</span>
+                        <input type="email" id="verifyEmail" required>
+                    </label>
+                    <label class="field">
+                        <span>Verification code</span>
+                        <input type="text" id="verifyCode" required>
+                    </label>
+                    <button class="btn btn-success" type="submit">Verify account</button>
+                </form>
+                <div class="auth-actions">
+                    <button class="link-btn" id="showLoginFromVerifyBtn" type="button">Back to login</button>
+                </div>
+            </div>
+
+            <div id="resetView" class="hidden">
+                <div class="card-header">
+                    <div>
+                        <h2>Set a new password</h2>
+                        <p>Use the recovery code from your email.</p>
+                    </div>
+                </div>
+
+                <form id="resetForm">
+                    <label class="field">
+                        <span>Email</span>
+                        <input type="email" id="resetEmail" required>
+                    </label>
+                    <label class="field">
+                        <span>Recovery code</span>
+                        <input type="text" id="resetCode" required>
+                    </label>
+                    <label class="field">
+                        <span>New password</span>
+                        <input type="password" id="resetPassword" required>
+                    </label>
+                    <button class="btn btn-primary" type="submit">Reset password</button>
+                </form>
+                <div class="auth-actions">
+                    <button class="link-btn" id="showLoginFromResetBtn" type="button">Back to login</button>
+                </div>
+            </div>
+
+            <div class="demo-box">
+                <p><strong>Demo accounts</strong></p>
+                <div>Admin: admin / admin123</div>
+                <div>Student: student / student123</div>
+                <div>New sign-ups create student accounts only.</div>
+            </div>
+            <p id="authMessage" class="message"></p>
+        </div>
+
+        <div id="appSection" class="hidden">
+            <div class="card profile-card">
+                <div class="profile-top">
+                    <div>
+                        <p class="eyebrow">Your workspace</p>
+                        <h2 id="welcomeText">Welcome</h2>
+                        <p id="userRoleText">Role: student</p>
+                    </div>
+                    <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div id="studentView" class="card panel hidden">
+                    <div class="card-header">
+                        <div>
+                            <p class="eyebrow">Student portal</p>
+                            <h3>Check in for class</h3>
+                        </div>
+                    </div>
+                    <p>Tap the button below to mark yourself present for today.</p>
+                    <button id="checkInBtn" class="btn btn-success">Check In</button>
+                    <div class="status-box">
+                        <span class="status-label">Current status</span>
+                        <p id="studentStatus">Status: pending</p>
+                    </div>
+                </div>
+
+                <div id="adminView" class="card panel hidden">
+                    <div class="card-header">
+                        <div>
+                            <p class="eyebrow">Admin portal</p>
+                            <h3>Attendance overview</h3>
+                        </div>
+                    </div>
+                    <p>Review today’s attendance records and keep the class list updated.</p>
+                    <div id="attendanceList" class="student-list"></div>
+                    <button id="refreshAttendanceBtn" class="btn btn-secondary">Refresh Attendance</button>
+                    <div class="status-box" style="margin-top:16px;">
+                        <span class="status-label">Site status</span>
+                        <p id="maintenanceStatus">Loading...</p>
+                        <button id="toggleMaintenanceBtn" class="btn btn-primary">Toggle Maintenance</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const authSection = document.getElementById('authSection');
+        const appSection = document.getElementById('appSection');
+        const authMessage = document.getElementById('authMessage');
+        const loginView = document.getElementById('loginView');
+        const registerView = document.getElementById('registerView');
+        const forgotView = document.getElementById('forgotView');
+        const verifyView = document.getElementById('verifyView');
+        const resetView = document.getElementById('resetView');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const forgotForm = document.getElementById('forgotForm');
+        const verifyForm = document.getElementById('verifyForm');
+        const resetForm = document.getElementById('resetForm');
+        const welcomeText = document.getElementById('welcomeText');
+        const userRoleText = document.getElementById('userRoleText');
+        const studentView = document.getElementById('studentView');
+        const adminView = document.getElementById('adminView');
+        const studentStatus = document.getElementById('studentStatus');
+        const attendanceList = document.getElementById('attendanceList');
+        let currentUser = null;
+        let authToken = localStorage.getItem('authToken') || '';
+
+        function setAuthToken(token) {
+            authToken = token;
+            if (token) {
+                localStorage.setItem('authToken', token);
+            } else {
+                localStorage.removeItem('authToken');
+            }
+        }
+
+        function getAuthHeaders() {
+            return authToken ? { Authorization: `Bearer ${authToken}` } : {};
+        }
+
+        function showAuthView(view) {
+            [loginView, registerView, forgotView, verifyView, resetView].forEach((panel) => {
+                panel.classList.add('hidden');
+            });
+            view.classList.remove('hidden');
+            authMessage.textContent = '';
+        }
+
+        function showLogin() {
+            authSection.classList.remove('hidden');
+            appSection.classList.add('hidden');
+            showAuthView(loginView);
+        }
+
+        function showApp(user) {
+            currentUser = user;
+            authSection.classList.add('hidden');
+            appSection.classList.remove('hidden');
+            welcomeText.textContent = `Welcome, ${user.username}`;
+            userRoleText.textContent = `Role: ${user.role}`;
+
+            if (user.role === 'student') {
+                studentView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+            } else {
+                studentView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                loadAttendance();
+            }
+        }
+
+        async function login(username, password) {
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    setAuthToken(result.token);
+                    showApp({ username: result.username, role: result.role });
+                    authMessage.textContent = 'Login successful.';
+                } else {
+                    authMessage.textContent = result.message || 'Login failed.';
+                }
+            } catch (error) {
+                authMessage.textContent = 'Unable to connect to the server.';
+            }
+        }
+
+        async function apiFetch(url, options = {}) {
+            options.headers = {
+                'Content-Type': 'application/json',
+                ...options.headers,
+                ...getAuthHeaders()
+            };
+            const response = await fetch(url, options);
+            if (response.status === 401) {
+                setAuthToken('');
+                showLogin();
+                throw new Error('Unauthorized');
+            }
+            return response.json();
+        }
+
+        async function registerUser() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const role = 'student';
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, role })
+                });
+                const result = await response.json();
+                authMessage.innerHTML = result.message || 'Registration complete.';
+                if (result.success && result.code) {
+                    document.getElementById('verifyEmail').value = email;
+                    document.getElementById('verifyCode').value = result.code;
+                    authMessage.innerHTML = `${result.message}<br><strong>Verification code:</strong> ${result.code}`;
+                    showAuthView(verifyView);
+                }
+            } catch (error) {
+                authMessage.textContent = 'Unable to complete registration.';
+            }
+        }
+
+        async function verifyAccount() {
+            const email = document.getElementById('verifyEmail').value.trim();
+            const code = document.getElementById('verifyCode').value.trim();
+            try {
+                const response = await fetch('/api/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code })
+                });
+                const result = await response.json();
+                authMessage.textContent = result.message || 'Verification complete.';
+                if (result.success) {
+                    showAuthView(loginView);
+                }
+            } catch (error) {
+                authMessage.textContent = 'Verification failed.';
+            }
+        }
+
+        async function requestReset() {
+            const email = document.getElementById('forgotEmail').value.trim();
+            try {
+                const response = await fetch('/api/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const result = await response.json();
+                authMessage.innerHTML = result.message || 'Recovery request processed.';
+                if (result.success && result.code) {
+                    document.getElementById('resetEmail').value = email;
+                    document.getElementById('resetCode').value = result.code;
+                    authMessage.innerHTML = `${result.message}<br><strong>Recovery code:</strong> ${result.code}`;
+                    showAuthView(resetView);
+                }
+            } catch (error) {
+                authMessage.textContent = 'Unable to send recovery code.';
+            }
+        }
+
+        async function resetPassword() {
+            const email = document.getElementById('resetEmail').value.trim();
+            const code = document.getElementById('resetCode').value.trim();
+            const password = document.getElementById('resetPassword').value.trim();
+            try {
+                const response = await fetch('/api/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code, password })
+                });
+                const result = await response.json();
+                authMessage.textContent = result.message || 'Password reset complete.';
+                if (result.success) {
+                    showAuthView(loginView);
+                }
+            } catch (error) {
+                authMessage.textContent = 'Unable to reset password.';
+            }
+        }
+
+        async function loadAttendance() {
+            try {
+                const data = await apiFetch('/api/attendance');
+                attendanceList.innerHTML = '';
+                data.forEach((item) => {
+                    const row = document.createElement('div');
+                    row.innerHTML = `<strong>${item.student}</strong><span>${item.status} · ${item.date}</span>`;
+                    attendanceList.appendChild(row);
+                });
+            } catch (error) {
+                attendanceList.innerHTML = '<p>Unable to load attendance.</p>';
+            }
+        }
+
+        async function loadMaintenanceStatus() {
+            if (!currentUser || currentUser.role !== 'admin') return;
+            try {
+                const result = await apiFetch('/api/maintenance');
+                if (result.success) {
+                    const status = result.enabled ? 'Offline for maintenance' : 'Online';
+                    document.getElementById('maintenanceStatus').textContent = status;
+                    document.getElementById('toggleMaintenanceBtn').textContent = result.enabled ? 'Turn site ON' : 'Turn site OFF';
+                }
+            } catch (error) {
+                document.getElementById('maintenanceStatus').textContent = 'Unable to load site status.';
+            }
+        }
+
+        async function toggleMaintenance() {
+            const button = document.getElementById('toggleMaintenanceBtn');
+            const currentEnabled = button.textContent === 'Turn site ON';
+            try {
+                const result = await apiFetch('/api/maintenance', {
+                    method: 'POST',
+                    body: JSON.stringify({ enabled: currentEnabled })
+                });
+                if (result.success) {
+                    loadMaintenanceStatus();
+                }
+            } catch (error) {
+                authMessage.textContent = 'Una+ble to change maintenance mode.';
+            }
+        }
+
+        async function markAttendance(student, status) {
+            try {
+                const result = await apiFetch('/api/attendance', {
+                    method: 'POST',
+                    body: JSON.stringify({})
+                });
+                if (result.success) {
+                    studentStatus.textContent = `Status: ${status}`;
+                    if (currentUser.role !== 'student') {
+                        loadAttendance();
+                    }
+                }
+            } catch (error) {
+                studentStatus.textContent = 'Attendance update failed.';
+            }
+        }
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            login(username, password);
+        });
+
+        registerForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            registerUser();
+        });
+
+        verifyForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            verifyAccount();
+        });
+
+        forgotForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            requestReset();
+        });
+
+        resetForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            resetPassword();
+        });
+
+        document.getElementById('showRegisterBtn').addEventListener('click', () => showAuthView(registerView));
+        document.getElementById('showForgotBtn').addEventListener('click', () => showAuthView(forgotView));
+        document.getElementById('showLoginFromRegisterBtn').addEventListener('click', () => showAuthView(loginView));
+        document.getElementById('showLoginFromForgotBtn').addEventListener('click', () => showAuthView(loginView));
+        document.getElementById('showLoginFromVerifyBtn').addEventListener('click', () => showAuthView(loginView));
+        document.getElementById('showLoginFromResetBtn').addEventListener('click', () => showAuthView(loginView));
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            currentUser = null;
+            setAuthToken('');
+            showLogin();
+            loginForm.reset();
+        });
+
+        async function restoreSession() {
+            if (!authToken) return;
+            try {
+                const result = await apiFetch('/api/me');
+                if (result.success) {
+                    showApp(result.user);
+                }
+            } catch (error) {
+                setAuthToken('');
+            }
+        }
+
+        restoreSession();
+
+        document.getElementById('checkInBtn').addEventListener('click', () => {
+            if (!currentUser || currentUser.role !== 'student') {
+                authMessage.textContent = 'Student only action.';
+                return;
+            }
+            markAttendance(currentUser.username, 'present');
+        });
+
+        document.getElementById('refreshAttendanceBtn').addEventListener('click', loadAttendance);
+        document.getElementById('toggleMaintenanceBtn').addEventListener('click', toggleMaintenance);
+
+        showLogin();
+    </script>
+</body>
+</html>
