@@ -6,7 +6,7 @@
     "start": "ts-node backend/src/index.ts",
     "start:prod": "ts-node backend/src/index.ts",
     "dev": "ts-node-dev --respawn backend/src/index.ts",
-    "build": "echo 'Build complete'",
+    "build": "prisma generate && tsc",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:studio": "prisma studio",
