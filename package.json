@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node backend/dist/index.js",
-    "start:prod": "node backend/dist/index.js",
+    "start": "npx prisma migrate deploy && node backend/dist/index.js",
+    "start:prod": "npx prisma migrate deploy && node backend/dist/index.js",
     "start:dev": "ts-node backend/src/index.ts",
     "dev": "ts-node-dev --respawn backend/src/index.ts",
-    "build": "npx prisma generate && tsc && npx prisma migrate deploy",
-    "prisma:generate": "prisma generate",
+    "build": "tsc",
+    "prisma:generate": "npx prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:studio": "prisma studio",
     "test": "jest --runInBand"

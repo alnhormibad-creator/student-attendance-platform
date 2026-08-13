@@ -12,11 +12,14 @@ COPY tsconfig.json ./
 COPY backend ./backend
 COPY prisma ./prisma
 
-# Install all dependencies (including devDependencies for ts-node)
-RUN npm ci --include=dev
+# Install all dependencies
+RUN npm ci
+
+# Generate Prisma client and compile TypeScript
+RUN npm run prisma:generate && npm run build
 
 # Expose port
-EXPOSE 8080
+EXPOSE 4000
 
-# Start production server with ts-node
-CMD ["npm", "run", "start:prod"]
+# Start production server
+CMD ["npm", "run", "start"]
