@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node backend/src/index.ts",
-    "start:prod": "ts-node backend/src/index.ts",
+    "start": "node backend/dist/index.js",
+    "start:dev": "ts-node backend/src/index.ts",
     "dev": "ts-node-dev --respawn backend/src/index.ts",
     "build": "prisma generate && tsc",
     "prisma:generate": "prisma generate",
