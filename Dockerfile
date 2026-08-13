@@ -1,14 +1,22 @@
 FROM node:20-alpine
 
+# Install OpenSSL (required by Prisma on Alpine)
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+COPY tsconfig.json ./
 
-COPY . .
+# Copy backend code and prisma schema
+COPY backend ./backend
+COPY prisma ./prisma
 
-RUN npm run prisma:generate
+# Install all dependencies (including devDependencies for ts-node)
+RUN npm ci --include=dev
 
-EXPOSE 4000
+# Expose port
+EXPOSE 8080
 
-CMD ["npm", "run", "start"]
+# Start production server with ts-node
+CMD ["npm", "run", "start:prod"]
