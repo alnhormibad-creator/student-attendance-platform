@@ -5,16 +5,13 @@
     "lib": ["ES2020", "DOM"],
     "allowJs": false,
     "strict": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "backend/dist",
     "rootDir": "backend/src",
-    "baseUrl": ".",
-    "paths": {
-      "@backend/*": ["backend/src/*"]
-    }
+    "ignoreDeprecations": "6.0"
   },
   "include": ["backend/src/**/*"],
   "exclude": ["node_modules", "frontend", "**/*.test.ts"]

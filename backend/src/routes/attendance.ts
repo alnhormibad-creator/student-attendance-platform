@@ -1,11 +1,11 @@
-import { Router } from 'express';
+import { Router, Response } from 'express';
 import prisma from '../prisma';
 import { authenticateToken, requireRole } from '../middleware/auth';
 import { AuthRequest } from '../types';
 
 const router = Router();
 
-router.get('/', authenticateToken as any, async (req: AuthRequest, res: any) => {
+router.get('/', authenticateToken, async (req: AuthRequest, res: Response) => {
   if (req.user?.role === 'ADMIN') {
     const attendance = await prisma.attendance.findMany({
       orderBy: [{ date: 'desc' }, { createdAt: 'desc' }],
@@ -22,7 +22,7 @@ router.get('/', authenticateToken as any, async (req: AuthRequest, res: any) => 
   return res.json({ success: true, attendance });
 });
 
-router.post('/', authenticateToken as any, (requireRole('STUDENT') as any), async (req: AuthRequest, res: any) => {
+router.post('/', authenticateToken, requireRole('STUDENT'), async (req: AuthRequest, res: Response) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 

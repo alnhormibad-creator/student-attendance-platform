@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, Response } from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { AuthRequest } from '../types';
 
 const router = Router();
 
-router.get('/', (authenticateToken as any), async (req: AuthRequest, res: any) => {
+router.get('/', authenticateToken, async (req: AuthRequest, res: Response) => {
   return res.json({ success: true, user: req.user });
 });
 
